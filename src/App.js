@@ -229,8 +229,14 @@ function App() {
     <Container>
       <Form onSubmit={handleSubmit}>
         <FormBody>
-          {roomValuesAll.map(item => (
-            <RoomContainer key={item.room} marginRight={item.room < 4 ? 16 : 0}>
+
+          {roomValuesAll.map((item, index) => {
+
+            return(
+
+
+            <RoomContainer key={index} marginRight={item.room < 4 ? 16 : 0}>
+
               <Heading
                 hasCheck={item.hasCheck}
                 roomNum={item.room}
@@ -269,7 +275,8 @@ function App() {
                 />
               </SelectWrapper>
             </RoomContainer>
-          ))}
+          )}
+          )}
         </FormBody>
 
         <Button data-testid={'app-button-submit'} type="submit">
