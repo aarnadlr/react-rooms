@@ -173,7 +173,7 @@ function App() {
           };
         }
         // If Room 2 is unchecked, clear Room 2 values
-        if (roomValuesAll[2].isChecked === false && item.room === 2) {
+        if (roomValuesAll[1].isChecked === false && item.room === 2) {
           return {
             ...item,
             adult: 0,
