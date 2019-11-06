@@ -39,7 +39,7 @@ const RoomContainer = styled.section`
   padding: 48px;
   background-color: white;
   margin-top: 16px;
-  margin-right: ${props => props.marginRight || 0}px;
+  margin-right: ${props => props.marginRight || 16}px;
   box-shadow: 5px 5px 20px 0px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   border-radius: 12px;
@@ -63,64 +63,49 @@ const SubmitWrapper = styled.div`
 function App() {
   const [submitted, setSubmitted] = useState(false);
 
-  const [roomValuesAll, setRoomValuesAll] = usePersistentState('data', [
-    {
-      room: 1,
-      adult: 0,
-      child: 0,
-      hasCheck: false,
-      isChecked: null,
-      isDisabled: false
-    },
-    {
-      room: 2,
-      adult: 0,
-      child: 0,
-      hasCheck: true,
-      isChecked: false,
-      isDisabled: true
-    },
-    {
-      room: 3,
-      adult: 0,
-      child: 0,
-      hasCheck: true,
-      isChecked: false,
-      isDisabled: true
-    },
-    {
-      room: 4,
-      adult: 0,
-      child: 0,
-      hasCheck: true,
-      isChecked: false,
-      isDisabled: true
-    }
-  ]);
+  let numberOfRoomsWanted = 9;
+  let roomsArray = [];
+
+  for (let i = 0; i < numberOfRoomsWanted ; i++) {
+    roomsArray.push({
+        room: i+1,
+        adult: 0,
+        child: 0,
+        hasCheck: i===0 ? false : true,
+        isChecked: null,
+        isDisabled: false
+      });
+  }
+
+
+  const [roomValuesAll, setRoomValuesAll] = usePersistentState('data',
+    roomsArray
+  )
 
   // When Room 4 is changed
   useEffect(() => {
     setRoomValuesAll(
-      roomValuesAll.map(item => {
+      roomValuesAll.map((item, index) => {
         // If Room 4 is checked, all rooms get checked
-        if (roomValuesAll[3].isChecked === true && item.room <= 3) {
+        // TODO: not working yet
+        if (roomValuesAll[Number(index)].isChecked === true) {
           return {
             ...item,
-            isChecked: roomValuesAll[3].isChecked
+            isChecked: roomValuesAll[Number(index-1)].isChecked
           };
         }
         // If Room 4 is unchecked, all other rooms keep their state
-        if (roomValuesAll[3].isChecked === false && item.room <= 3) {
-          return item;
-        }
-        // If Room 4 is unchecked, clear Room 4 values
-        if (roomValuesAll[3].isChecked === false && item.room === 4) {
-          return {
-            ...item,
-            adult: 0,
-            child: 0
-          };
-        }
+        // if (roomValuesAll[3].isChecked === false && item.room <= 3) {
+        //   return item;
+        // }
+        // // If Room 4 is unchecked, clear Room 4 values
+        // if (roomValuesAll[3].isChecked === false && item.room === 4) {
+        //   return {
+        //     ...item,
+        //     adult: 0,
+        //     child: 0
+        //   };
+        // }
         return item;
       })
     );
